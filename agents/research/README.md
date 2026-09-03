@@ -1,7 +1,16 @@
 # Research agent
 
-This directory is reserved for the first reasoning component. Later milestones
-will add its executable contract, model client, versioned prompt, schemas, and
-bounded tool-calling loop.
+`research-agent` currently implements the protocol-only Milestone 2 interface:
 
-There is no runnable research agent in Milestone 1.
+```console
+research-agent --help
+research-agent --manifest
+research-agent "question"
+echo '{"query":"question"}' | research-agent --json
+```
+
+The human and JSON query paths return a deterministic placeholder result. This
+proves the executable boundary without implying that research occurred.
+
+The model client, versioned system prompt, research behavior, and bounded
+tool-calling loop belong to later milestones.

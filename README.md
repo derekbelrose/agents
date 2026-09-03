@@ -17,9 +17,9 @@ boundaries.
 
 ## Current status
 
-Milestone 1 establishes the repository, development shell, directory layout,
-and architecture documentation. It does not yet implement `research-agent` or
-`web-search-tool`.
+Milestone 2 provides the executable and JSON protocol for `research-agent`.
+Responses are deterministic placeholders until model and tool integration are
+introduced in later milestones. `web-search-tool` is not implemented yet.
 
 The planned first usable path is:
 
@@ -47,6 +47,24 @@ uv installs the locked Python development dependencies into `.venv`.
 uv sync --frozen
 ```
 
+## Run the protocol milestone
+
+```console
+uv run --frozen research-agent --help
+uv run --frozen research-agent --manifest
+uv run --frozen research-agent "What are the security properties of Nix?"
+echo '{"query":"What are the security properties of Nix?"}' \
+  | uv run --frozen research-agent --json
+```
+
+The Nix-packaged executable exposes the same interface:
+
+```console
+nix run .#research-agent -- --manifest
+```
+
+See [docs/protocol.md](docs/protocol.md) for the complete protocol behavior.
+
 ## Verify the repository
 
 ```console
@@ -56,9 +74,8 @@ uv run --frozen ruff check .
 uv run --frozen pytest --collect-only -q
 ```
 
-`nix flake check` validates the repository structure and contract-test
-collection. The executable contract tests remain intentionally red until
-Milestone 2 is implemented.
+`nix flake check` builds `research-agent` and runs the complete executable
+contract suite against the Nix package.
 
 ## Repository layout
 

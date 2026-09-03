@@ -5,15 +5,19 @@ description = "Nix-packaged agent toolkit"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.scripts]
+research-agent = "research_agent.cli:main"
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
 [dependency-groups]
 dev = [
   "jsonschema>=4.23,<5",
   "pytest>=8.3,<10",
   "ruff>=0.12,<1",
 ]
-
-[tool.uv]
-package = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -23,3 +27,12 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
+
+[tool.setuptools]
+package-dir = { "" = "agents/research/src" }
+
+[tool.setuptools.packages.find]
+where = ["agents/research/src"]
+
+[tool.setuptools.package-data]
+research_agent = ["schemas/v0.1/*.json"]

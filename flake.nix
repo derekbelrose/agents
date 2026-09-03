@@ -4,7 +4,7 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs =
-    { nixpkgs, ... }:
+    { self, nixpkgs }:
     let
       supportedSystems = [
         "x86_64-linux"
@@ -13,10 +13,31 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          research-agent = pkgs.callPackage ./agents/research/default.nix { };
+          default = self.packages.${system}.research-agent;
+        }
+      );
+
+      apps = forAllSystems (system: {
+        research-agent = {
+          type = "app";
+          program = "${self.packages.${system}.research-agent}/bin/research-agent";
+          meta.description = "Protocol-first research agent";
+        };
+        default = self.apps.${system}.research-agent;
+      });
+
       checks = forAllSystems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          research-agent = self.packages.${system}.research-agent;
         in
         {
           repository-layout = pkgs.runCommand "ai-agents-repository-layout" { src = ./.; } ''
@@ -24,25 +45,30 @@
             test -s "$src/AGENTS.md"
             test -s "$src/PLAN.md"
             test -s "$src/docs/architecture.md"
+            test -s "$src/docs/protocol.md"
             test -s "$src/agents/research/README.md"
             test -s "$src/tools/README.md"
             test -s "$src/tests/README.md"
             touch "$out"
           '';
 
-          contract-tests-collect =
-            pkgs.runCommand "research-agent-contract-tests-collect"
+          contract-tests =
+            pkgs.runCommand "research-agent-contract-tests"
               {
                 src = ./.;
                 nativeBuildInputs = [
                   pkgs.python3Packages.jsonschema
                   pkgs.python3Packages.pytest
+                  research-agent
                 ];
               }
               ''
-                pytest --collect-only -q "$src/tests"
+                RESEARCH_AGENT_BIN="${research-agent}/bin/research-agent" \
+                  pytest -p no:cacheprovider -q "$src/tests"
                 touch "$out"
               '';
+
+          inherit research-agent;
         }
       );
 
