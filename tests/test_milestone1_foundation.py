@@ -48,5 +48,6 @@ def test_no_bootstrap_nongoal_component_directories_exist() -> None:
     assert forbidden.isdisjoint(directories)
 
 
+@pytest.mark.milestone1
 def test_test_file_is_inside_repository() -> None:
     assert Path(__file__).is_relative_to(ROOT)
