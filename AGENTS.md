@@ -39,6 +39,7 @@
 
 ## Scope status
 
-Milestone 2 implements the `research-agent` process and JSON protocol with
-deterministic placeholder results. Do not add an LLM, model client, web search,
-or tool-calling loop while working within this milestone.
+Milestone 3 provides an internal OpenAI-compatible model client configured at
+runtime. The `research-agent` CLI still returns deterministic placeholder
+results. Do not add web search, a reasoning loop, or tool invocation while
+working within this milestone.

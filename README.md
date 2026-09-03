@@ -64,6 +64,8 @@ nix run .#research-agent -- --manifest
 ```
 
 See [docs/protocol.md](docs/protocol.md) for the complete protocol behavior.
+The internal model client and runtime configuration are documented in
+[docs/model-client.md](docs/model-client.md).
 
 ## Verify the repository
 

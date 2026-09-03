@@ -69,14 +69,18 @@
                 touch "$out"
               '';
 
-          model-client-tests-collect =
-            pkgs.runCommand "model-client-tests-collect"
+          model-client-tests =
+            pkgs.runCommand "model-client-tests"
               {
                 src = ./.;
-                nativeBuildInputs = [ pkgs.python3Packages.pytest ];
+                nativeBuildInputs = [
+                  pkgs.python3Packages.pytest
+                  research-agent
+                ];
               }
               ''
-                pytest -p no:cacheprovider --collect-only -q \
+                PYTHONPATH="${research-agent}/${pkgs.python3.sitePackages}" \
+                  pytest -p no:cacheprovider -q \
                   "$src/tests/test_model_client.py"
                 touch "$out"
               '';
