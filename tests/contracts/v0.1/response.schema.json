@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.local/contracts/v0.1/response.schema.json",
+  "title": "Research agent response",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["status", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "const": "success" },
+        "result": {
+          "type": "object",
+          "required": ["summary", "findings", "sources", "confidence"],
+          "additionalProperties": false,
+          "properties": {
+            "summary": { "type": "string" },
+            "findings": { "type": "array" },
+            "sources": { "type": "array" },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["status", "error"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "const": "error" },
+        "error": {
+          "type": "object",
+          "required": ["code", "message", "reason"],
+          "additionalProperties": false,
+          "properties": {
+            "code": { "type": "string", "minLength": 1 },
+            "message": { "type": "string", "minLength": 1 },
+            "reason": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  ]
+}

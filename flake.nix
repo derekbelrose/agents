@@ -29,6 +29,20 @@
             test -s "$src/tests/README.md"
             touch "$out"
           '';
+
+          contract-tests-collect =
+            pkgs.runCommand "research-agent-contract-tests-collect"
+              {
+                src = ./.;
+                nativeBuildInputs = [
+                  pkgs.python3Packages.jsonschema
+                  pkgs.python3Packages.pytest
+                ];
+              }
+              ''
+                pytest --collect-only -q "$src/tests"
+                touch "$out"
+              '';
         }
       );
 
@@ -46,6 +60,7 @@
               python3
               ruff
               uv
+              python3Packages.jsonschema
               python3Packages.pytest
             ];
 
