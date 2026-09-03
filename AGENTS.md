@@ -28,12 +28,14 @@
 - Work on a `feature/` branch in `.worktrees/<branch-name>` rather than directly
   on `master`.
 - Use Nix for reproducible development, packaging, and composition.
-- Use uv for Python project and dependency management once Python code is
-  introduced; commit its lockfile.
+- Use uv for Python project and dependency management. Add dependencies with
+  `uv add` or `uv add --dev`; commit `uv.lock` and never edit it manually.
 - Keep prompts and schemas in versioned files rather than scattering them
   through application code.
 - Add contract-focused tests without requiring live LLM or Internet access.
-- Run `nix fmt -- --check flake.nix` and `nix flake check` before committing.
+- Run `uv sync --frozen`, `uv run --frozen ruff check .`,
+  `uv run --frozen pytest --collect-only -q`, `nix fmt -- --check flake.nix`,
+  and `nix flake check` before committing tests-only changes.
 
 ## Scope status
 

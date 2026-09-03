@@ -40,18 +40,25 @@ No globally installed Python packages are required.
 nix develop
 ```
 
-The shell provides Python, uv, pytest, Ruff, jq, and the Nix formatter used by
-the project.
+The shell provides Python, uv, jq, and the Nix formatter used by the project.
+uv installs the locked Python development dependencies into `.venv`.
+
+```console
+uv sync --frozen
+```
 
 ## Verify the repository
 
 ```console
 nix flake check
 nix fmt -- --check flake.nix
+uv run --frozen ruff check .
+uv run --frozen pytest --collect-only -q
 ```
 
-`nix flake check` currently validates the Milestone 1 repository structure.
-Contract and implementation tests will be added alongside later milestones.
+`nix flake check` validates the repository structure and contract-test
+collection. The executable contract tests remain intentionally red until
+Milestone 2 is implemented.
 
 ## Repository layout
 
@@ -70,4 +77,5 @@ AGENTS.md           repository guidance for coding agents
 
 Create implementation work on a `feature/` branch in a Git worktree under
 `.worktrees/`. Keep commits focused, update documentation with observable
-behavior, and run `nix flake check` before sharing a branch.
+behavior, and run the frozen uv and Nix checks before sharing a branch. Add
+Python dependencies with `uv add` or `uv add --dev`, and commit `uv.lock`.
