@@ -40,3 +40,18 @@ and credential-safe representations.
 
 Until the Milestone 3 client exists, the model-client tests are expected to
 stop at a clear `research_agent.model is not implemented` fixture failure.
+
+## Milestone 4 web-search tests
+
+`test_web_search.py` defines the external executable contract for the first
+deterministic tool. It drives the future `web-search` process against an
+in-process fake Brave API, so the suite requires no live network or credential.
+
+The tests cover help and manifest discovery, human and JSON interfaces,
+versioned schemas, SecretSpec declaration, Brave request construction,
+normalized results and provenance, configuration, structured errors, and
+credential-safe output.
+
+Until Milestone 4 is implemented, the executable tests stop at a clear missing
+`web-search` fixture failure and the SecretSpec test fails because its
+declaration does not exist. Collection remains enforced by `nix flake check`.

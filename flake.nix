@@ -85,6 +85,21 @@
                 touch "$out"
               '';
 
+          web-search-tests-collect =
+            pkgs.runCommand "web-search-tests-collect"
+              {
+                src = ./.;
+                nativeBuildInputs = [
+                  pkgs.python3Packages.jsonschema
+                  pkgs.python3Packages.pytest
+                ];
+              }
+              ''
+                pytest -p no:cacheprovider --collect-only -q \
+                  "$src/tests/test_web_search.py"
+                touch "$out"
+              '';
+
           inherit research-agent;
         }
       );
