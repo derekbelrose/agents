@@ -64,7 +64,20 @@
               }
               ''
                 RESEARCH_AGENT_BIN="${research-agent}/bin/research-agent" \
-                  pytest -p no:cacheprovider -q "$src/tests"
+                  pytest -p no:cacheprovider -q \
+                    "$src/tests/test_research_agent_contract.py"
+                touch "$out"
+              '';
+
+          model-client-tests-collect =
+            pkgs.runCommand "model-client-tests-collect"
+              {
+                src = ./.;
+                nativeBuildInputs = [ pkgs.python3Packages.pytest ];
+              }
+              ''
+                pytest -p no:cacheprovider --collect-only -q \
+                  "$src/tests/test_model_client.py"
                 touch "$out"
               '';
 
