@@ -35,10 +35,10 @@
 - Add contract-focused tests without requiring live LLM or Internet access.
 - Run `uv sync --frozen`, `uv run --frozen ruff check .`,
   `uv run --frozen pytest --collect-only -q`, `nix fmt -- --check flake.nix`,
-  and `nix flake check` before committing tests-only changes.
+  and `nix flake check` before committing Python changes.
 
 ## Scope status
 
-Milestone 1 is repository scaffolding only. `research-agent` and
-`web-search-tool` are planned interfaces, not commands available on this branch
-yet.
+Milestone 2 implements the `research-agent` process and JSON protocol with
+deterministic placeholder results. Do not add an LLM, model client, web search,
+or tool-calling loop while working within this milestone.

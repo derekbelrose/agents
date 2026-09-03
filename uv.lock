@@ -5,7 +5,7 @@ requires-python = ">=3.11"
 [[package]]
 name = "ai-agents"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 
 [package.dev-dependencies]
 dev = [
