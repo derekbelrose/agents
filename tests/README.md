@@ -13,9 +13,16 @@ By default, the suite resolves `research-agent` from `PATH`. Override the
 executable under test with `RESEARCH_AGENT_BIN`:
 
 ```console
-RESEARCH_AGENT_BIN=/path/to/research-agent pytest -q
+uv sync --frozen
+RESEARCH_AGENT_BIN=/path/to/research-agent uv run --frozen pytest -q
 ```
 
 Until Milestone 2 is implemented, the suite is expected to fail with a clear
-message that `research-agent` could not be found. Test collection itself must
-pass and is enforced by `nix flake check`.
+message that `research-agent` could not be found. Verify the tests themselves
+without running the absent implementation:
+
+```console
+uv run --frozen pytest --collect-only -q
+```
+
+Collection is also enforced by `nix flake check`.

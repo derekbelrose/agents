@@ -58,10 +58,7 @@
               jq
               nixfmt
               python3
-              ruff
               uv
-              python3Packages.jsonschema
-              python3Packages.pytest
             ];
 
             UV_PYTHON = "${pkgs.python3}/bin/python3";

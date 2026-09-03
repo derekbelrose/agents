@@ -26,7 +26,8 @@ def research_agent_command() -> list[str]:
     if resolved is None:
         pytest.fail(
             f"research-agent executable not found: {executable!r}. "
-            "Implement Milestone 2 or set RESEARCH_AGENT_BIN to the executable under test."
+            "Implement Milestone 2 or set RESEARCH_AGENT_BIN to the executable "
+            "under test."
         )
     command[0] = resolved
     return command
