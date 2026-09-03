@@ -26,3 +26,17 @@ uv run --frozen pytest --collect-only -q
 ```
 
 Collection is also enforced by `nix flake check`.
+
+## Milestone 3 model-client tests
+
+`test_model_client.py` defines the internal model-client contract before its
+implementation. The tests use an in-process fake OpenAI-compatible HTTP server;
+they require no network access, model weights, or credentials.
+
+The suite covers external runtime configuration, optional bearer
+authentication, generation parameters, messages, tool definitions, structured
+response formats, normalized responses, malformed responses, transport errors,
+and credential-safe representations.
+
+Until the Milestone 3 client exists, the model-client tests are expected to
+stop at a clear `research_agent.model is not implemented` fixture failure.
