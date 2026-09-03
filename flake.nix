@@ -20,6 +20,7 @@
         in
         {
           research-agent = pkgs.callPackage ./agents/research/default.nix { };
+          web-search-tool = pkgs.callPackage ./tools/web-search/default.nix { };
           default = self.packages.${system}.research-agent;
         }
       );
@@ -30,6 +31,11 @@
           program = "${self.packages.${system}.research-agent}/bin/research-agent";
           meta.description = "Protocol-first research agent";
         };
+        web-search-tool = {
+          type = "app";
+          program = "${self.packages.${system}.web-search-tool}/bin/web-search";
+          meta.description = "Deterministic Brave web search tool";
+        };
         default = self.apps.${system}.research-agent;
       });
 
@@ -38,6 +44,7 @@
         let
           pkgs = nixpkgs.legacyPackages.${system};
           research-agent = self.packages.${system}.research-agent;
+          web-search-tool = self.packages.${system}.web-search-tool;
         in
         {
           repository-layout = pkgs.runCommand "ai-agents-repository-layout" { src = ./.; } ''
@@ -48,7 +55,9 @@
             test -s "$src/docs/protocol.md"
             test -s "$src/agents/research/README.md"
             test -s "$src/tools/README.md"
+            test -s "$src/tools/web-search/README.md"
             test -s "$src/tests/README.md"
+            test -s "$src/secretspec.toml"
             touch "$out"
           '';
 
@@ -85,22 +94,24 @@
                 touch "$out"
               '';
 
-          web-search-tests-collect =
-            pkgs.runCommand "web-search-tests-collect"
+          web-search-tests =
+            pkgs.runCommand "web-search-tests"
               {
                 src = ./.;
                 nativeBuildInputs = [
                   pkgs.python3Packages.jsonschema
                   pkgs.python3Packages.pytest
+                  web-search-tool
                 ];
               }
               ''
-                pytest -p no:cacheprovider --collect-only -q \
+                WEB_SEARCH_BIN="${web-search-tool}/bin/web-search" \
+                  pytest -p no:cacheprovider -q \
                   "$src/tests/test_web_search.py"
                 touch "$out"
               '';
 
-          inherit research-agent;
+          inherit research-agent web-search-tool;
         }
       );
 
@@ -116,6 +127,7 @@
               jq
               nixfmt
               python3
+              secretspec
               uv
             ];
 

@@ -13,7 +13,7 @@ By default, the suite resolves `research-agent` from `PATH`. Override the
 executable under test with `RESEARCH_AGENT_BIN`:
 
 ```console
-uv sync --frozen
+uv sync --all-packages --frozen
 RESEARCH_AGENT_BIN=/path/to/research-agent uv run --frozen pytest -q
 ```
 
@@ -52,6 +52,5 @@ versioned schemas, SecretSpec declaration, Brave request construction,
 normalized results and provenance, configuration, structured errors, and
 credential-safe output.
 
-Until Milestone 4 is implemented, the executable tests stop at a clear missing
-`web-search` fixture failure and the SecretSpec test fails because its
-declaration does not exist. Collection remains enforced by `nix flake check`.
+Milestone 4 implements this contract. The complete suite runs against the uv
+workspace executable and the independently built Nix package.

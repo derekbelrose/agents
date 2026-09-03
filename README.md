@@ -17,9 +17,9 @@ boundaries.
 
 ## Current status
 
-Milestone 2 provides the executable and JSON protocol for `research-agent`.
-Responses are deterministic placeholders until model and tool integration are
-introduced in later milestones. `web-search-tool` is not implemented yet.
+Milestone 4 adds the independently executable `web-search-tool`. The research
+agent still returns deterministic placeholders and does not invoke the tool
+until Milestone 5.
 
 The planned first usable path is:
 
@@ -44,7 +44,7 @@ The shell provides Python, uv, jq, and the Nix formatter used by the project.
 uv installs the locked Python development dependencies into `.venv`.
 
 ```console
-uv sync --frozen
+uv sync --all-packages --frozen
 ```
 
 ## Run the protocol milestone
@@ -61,11 +61,29 @@ The Nix-packaged executable exposes the same interface:
 
 ```console
 nix run .#research-agent -- --manifest
+nix run .#web-search-tool -- --manifest
 ```
 
 See [docs/protocol.md](docs/protocol.md) for the complete protocol behavior.
 The internal model client and runtime configuration are documented in
 [docs/model-client.md](docs/model-client.md).
+
+## Run the web-search tool
+
+The first deterministic tool is an independent uv workspace package and Nix
+application:
+
+```console
+secretspec check --reason "Validate web search credentials"
+secretspec set BRAVE_API_KEY
+secretspec run --reason "Run web search" -- \
+  uv run --frozen web-search "Nix sandboxing"
+secretspec run --reason "Run web search" -- \
+  nix run .#web-search-tool -- --json "Nix sandboxing"
+```
+
+See [tools/web-search/README.md](tools/web-search/README.md) for its interfaces
+and configuration.
 
 ## Verify the repository
 

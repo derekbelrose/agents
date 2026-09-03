@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.local/contracts/web-search/v0.1/manifest.schema.json",
+  "title": "Web search manifest",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "name",
+    "description",
+    "version",
+    "input_schema",
+    "output_schema",
+    "capabilities"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "protocol_version": { "const": "0.1" },
+    "name": { "const": "web-search" },
+    "description": { "type": "string", "minLength": 1 },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "input_schema": { "type": "object" },
+    "output_schema": { "type": "object" },
+    "capabilities": {
+      "type": "array",
+      "contains": { "const": "web-search" },
+      "minContains": 1,
+      "uniqueItems": true
+    }
+  }
+}

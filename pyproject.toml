@@ -36,3 +36,6 @@ where = ["agents/research/src"]
 
 [tool.setuptools.package-data]
 research_agent = ["schemas/v0.1/*.json"]
+
+[tool.uv.workspace]
+members = ["tools/web-search"]

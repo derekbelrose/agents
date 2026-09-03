@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.local/contracts/web-search/v0.1/response.schema.json",
+  "title": "Web search response",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["status", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "const": "success" },
+        "result": {
+          "type": "object",
+          "required": ["query", "results", "retrieved_at"],
+          "additionalProperties": false,
+          "properties": {
+            "query": { "type": "string", "minLength": 1 },
+            "results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["title", "url", "snippet", "source"],
+                "additionalProperties": false,
+                "properties": {
+                  "title": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" },
+                  "snippet": { "type": "string" },
+                  "source": { "const": "brave-search" }
+                }
+              }
+            },
+            "retrieved_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["status", "error"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "const": "error" },
+        "error": {
+          "type": "object",
+          "required": ["code", "message", "reason"],
+          "additionalProperties": false,
+          "properties": {
+            "code": { "type": "string", "minLength": 1 },
+            "message": { "type": "string", "minLength": 1 },
+            "reason": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  ]
+}

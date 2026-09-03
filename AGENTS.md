@@ -33,13 +33,12 @@
 - Keep prompts and schemas in versioned files rather than scattering them
   through application code.
 - Add contract-focused tests without requiring live LLM or Internet access.
-- Run `uv sync --frozen`, `uv run --frozen ruff check .`,
+- Run `uv sync --all-packages --frozen`, `uv run --frozen ruff check .`,
   `uv run --frozen pytest --collect-only -q`, `nix fmt -- --check flake.nix`,
   and `nix flake check` before committing Python changes.
 
 ## Scope status
 
-Milestone 3 provides an internal OpenAI-compatible model client configured at
-runtime. The `research-agent` CLI still returns deterministic placeholder
-results. Do not add web search, a reasoning loop, or tool invocation while
-working within this milestone.
+Milestone 4 provides the independently executable `web-search-tool` backed by
+Brave Search. The `research-agent` CLI does not invoke it yet. Do not add a
+reasoning loop or tool invocation while working within this milestone.
